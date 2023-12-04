@@ -7,11 +7,23 @@ class VehicleInfo:
     catalogue_price: int
     electric: bool
 
+    def __init__(self, brand, catalogue_price, electric) -> None:
+        self.brand = brand
+        self.catalogue_price = catalogue_price
+        self.electric = electric
 
 class Vehicle:
     id: str
     license_plate: str
     info: VehicleInfo
+
+    def __init__(self, id, license_plate, info) -> None:
+        self.id = id
+        self.license_plate = license_plate
+        self.info = info
+    
+vi = VehicleInfo('brand', 10000, True)
+v = Vehicle('id', '123456', vi)
 
 
 class VehicleRegistry:
