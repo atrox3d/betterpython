@@ -8,6 +8,12 @@ class VehicleInfo:
     electric: bool
 
 
+class Vehicle:
+    id: str
+    license_plate: str
+    info: VehicleInfo
+
+
 class VehicleRegistry:
 
     def generate_vehicle_id(self, length):
