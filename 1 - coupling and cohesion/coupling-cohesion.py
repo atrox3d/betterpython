@@ -47,5 +47,6 @@ class Application:
         print(f"License plate: {license_plate}")
         print(f"Payable tax: {payable_tax}")
 
-app = Application()
-app.register_vehicle("Volkswagen ID3")
+if __name__ == '__main__':
+    app = Application()
+    app.register_vehicle("Volkswagen ID3")
