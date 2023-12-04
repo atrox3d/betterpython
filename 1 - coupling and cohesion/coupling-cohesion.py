@@ -1,6 +1,13 @@
 import string
 import random
 
+
+class VehicleInfo:
+    brand: str
+    catalogue_price: int
+    electric: bool
+
+
 class VehicleRegistry:
 
     def generate_vehicle_id(self, length):
