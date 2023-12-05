@@ -9,6 +9,15 @@ class VehicleInfo:
     catalogue_price: int
     electric: bool
 
+    def compute_tax(self):
+        tax_percentage = 0.05
+        if self.electric:
+            tax_percentage = 0.02
+        return tax_percentage * self.catalogue_price
+
+    def print(self):
+        print(f"Brand: {self.brand}")
+        print(f"Payable tax: {self.compute_tax()}")    
 
 @dataclass
 class Vehicle:
@@ -16,9 +25,10 @@ class Vehicle:
     license_plate: str
     info: VehicleInfo
 
-
-# vi = VehicleInfo('brand', 10000, True)
-# v = Vehicle('id', '123456', vi)
+    def print(self):
+        print(f"ID: {self.id}")
+        print(f"License PLate: {self.license_plate}")
+        self.info.print()
 
 
 class VehicleRegistry:
@@ -48,7 +58,6 @@ class VehicleRegistry:
 
         return Vehicle(vehicle_id, license_plate, self.vehicle_info[brand])
 
-
 class Application:
 
     def __init__(self) -> None:
@@ -59,30 +68,7 @@ class Application:
         registry = VehicleRegistry()
 
         vehicle = registry.create_vehicle(brand)
-
-        # compute the catalogue price
-        catalogue_price = 0
-        if brand == "Tesla Model 3":
-            catalogue_price = 60000
-        elif brand == "Volkswagen ID3":
-            catalogue_price = 35000
-        elif brand == "BMW 5":
-            catalogue_price = 45000
-
-        # compute the tax percentage (default 5% of the catalogue price, except for electric cars where it is 2%)
-        tax_percentage = 0.05
-        if brand == "Tesla Model 3" or brand == "Volkswagen ID3":
-            tax_percentage = 0.02
-
-        # compute the payable tax
-        payable_tax = tax_percentage * catalogue_price
-
-        # print out the vehicle registration information
-        print("Registration complete. Vehicle information:")
-        print(f"Brand: {brand}")
-        print(f"Id: {vehicle_id}")
-        print(f"License plate: {license_plate}")
-        print(f"Payable tax: {payable_tax}")
+        vehicle.print()
 
 if __name__ == '__main__':
     app = Application()
