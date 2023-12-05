@@ -67,9 +67,9 @@ class Application:
         # create a registry instance
         registry = VehicleRegistry()
 
-        vehicle = registry.create_vehicle(brand)
-        vehicle.print()
+        return registry.create_vehicle(brand)
 
 if __name__ == '__main__':
     app = Application()
-    app.register_vehicle("Volkswagen ID3")
+    vehicle = app.register_vehicle("Volkswagen ID3")
+    vehicle.print()
