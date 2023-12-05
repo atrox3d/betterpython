@@ -10,7 +10,7 @@ class Switchable(ABC):
         pass
 
 
-class LightBulb:
+class LightBulb(Switchable):
     def turn_on(self):
         print("LightBulb: turned on...")
 
@@ -20,16 +20,16 @@ class LightBulb:
 
 class ElectricPowerSwitch:
 
-    def __init__(self, l: LightBulb):
-        self.lightBulb = l
+    def __init__(self, client: Switchable):
+        self.client = client
         self.on = False
 
     def press(self):
         if self.on:
-            self.lightBulb.turn_off()
+            self.client.turn_off()
             self.on = False
         else:
-            self.lightBulb.turn_on()
+            self.client.turn_on()
             self.on = True
 
 
