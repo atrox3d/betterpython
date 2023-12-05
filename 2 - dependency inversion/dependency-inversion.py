@@ -1,16 +1,30 @@
 from abc import ABC, abstractmethod
 
 class Switchable(ABC):
+    """
+    define Switchable interface
+    """
+
     @abstractmethod
     def turn_on(self):
+        """
+        turn on device        
+        """
         pass
 
     @abstractmethod
     def turn_off(self):
+        """
+        turn off device
+        """
         pass
 
 
 class LightBulb(Switchable):
+    """
+    represents a switchable lightbulb
+    """
+
     def turn_on(self):
         print("LightBulb: turned on...")
 
@@ -19,6 +33,10 @@ class LightBulb(Switchable):
 
 
 class Fan(Switchable):
+    """
+    represents a switchable fan
+    """
+    
     def turn_on(self):
         print("Fan: turned on...")
 
@@ -27,7 +45,12 @@ class Fan(Switchable):
 
 
 class ElectricPowerSwitch:
+    """
+    represents an electric power switch
 
+    turns on and off a switchable device
+    """
+    
     def __init__(self, client: Switchable):
         self.client = client
         self.on = False
