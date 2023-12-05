@@ -1,3 +1,15 @@
+from abc import ABC, abstractmethod
+
+class Switchable(ABC):
+    @abstractmethod
+    def turn_on(self):
+        pass
+
+    @abstractmethod
+    def turn_off(self):
+        pass
+
+
 class LightBulb:
     def turn_on(self):
         print("LightBulb: turned on...")
