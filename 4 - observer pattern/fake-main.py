@@ -1,0 +1,1 @@
+from api_v3.listeners.slack import setup_handlers
