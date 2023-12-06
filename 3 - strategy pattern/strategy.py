@@ -14,6 +14,20 @@ class TicketOrderingStrategy(ABC):
     def create_ordering(self, _list: List[SupportTicket]) -> List[SupportTicket]:
         pass
 
+class FIFOOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, _list: List[SupportTicket]) -> List[SupportTicket]:
+        return _list.copy()
+
+class LIFOOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, _list: List[SupportTicket]) -> List[SupportTicket]:
+        return _list.copy().reverse()
+
+class RandomOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, _list: List[SupportTicket]) -> List[SupportTicket]:
+        return random.shuffle(_list.copy())
+
+
+
 class SupportTicket:
 
     def __init__(self, customer, issue):
