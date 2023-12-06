@@ -1,12 +1,18 @@
 import string
 import random
 from typing import List
+from abc import ABC, abstractmethod
 
 
 def generate_id(length=8):
     # helper function for generating an id
     return ''.join(random.choices(string.ascii_uppercase, k=length))
 
+
+class TicketOrderingStrategy(ABC):
+    @abstractmethod
+    def create_ordering(self, _list: List[SupportTicket]) -> List[SupportTicket]:
+        pass
 
 class SupportTicket:
 
