@@ -2,6 +2,7 @@ import string
 import random
 from typing import List
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
 
 
 def generate_id(length=8):
@@ -9,12 +10,11 @@ def generate_id(length=8):
     return ''.join(random.choices(string.ascii_uppercase, k=length))
 
 
+@dataclass
 class SupportTicket:
-
-    def __init__(self, customer, issue):
-        self.id = generate_id()
-        self.customer = customer
-        self.issue = issue
+    customer: str
+    issue: str
+    id: str = field(default_factory=generate_id)
 
 
 class TicketOrderingStrategy(ABC):
