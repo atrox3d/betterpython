@@ -37,6 +37,10 @@ class RandomOrderingStrategy(TicketOrderingStrategy):
         rnd = _list.copy()
         random.shuffle(rnd)
         return rnd
+    
+class BlackHoleOrderingStrategy(TicketOrderingStrategy):
+    def create_ordering(self, _list: List[SupportTicket]) -> List[SupportTicket]:
+        return []
 
 class CustomerSupport:
 
@@ -75,4 +79,4 @@ app.create_ticket("Linus Sebastian", "I can't upload any videos, please help.")
 app.create_ticket("Arjan Egges", "VSCode doesn't automatically solve my bugs.")
 
 # process the tickets
-app.process_tickets(RandomOrderingStrategy())
+app.process_tickets(BlackHoleOrderingStrategy())
