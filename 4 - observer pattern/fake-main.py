@@ -2,6 +2,7 @@ import logging
 
 from api_v3.listeners import slack
 from api_v3.listeners import email
+from api_v3.listeners import log
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -10,3 +11,4 @@ logging.basicConfig(
 
 slack.setup_handlers()
 email.setup_handlers()
+log.setup_handlers()
