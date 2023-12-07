@@ -5,6 +5,7 @@ from api_v3.listeners import email
 from api_v3.listeners import log
 
 from api_v3.user import register_new_user, password_forgotten
+from api_v3.plan import upgrade_plan
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -23,3 +24,6 @@ register_new_user('bob', 'pwd', 'bob@mail')
 
 logger.info(f'resetting password')
 password_forgotten('bob@mail')
+
+logger.info(f'upgrading plan')
+upgrade_plan('bob@mail')

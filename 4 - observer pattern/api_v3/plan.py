@@ -1,7 +1,11 @@
-from lib.email import send_email
+import logging
+# from lib.email import send_email
 from lib.db import create_user, find_user
-from lib.log import log
-from lib.slack import post_slack_message
+# from lib.log import log
+# from lib.slack import post_slack_message
+from .event import post_event
+
+logger = logging.getLogger(__name__)
 
 def upgrade_plan(email: str):
     # find the user
@@ -10,14 +14,17 @@ def upgrade_plan(email: str):
     # upgrade the plan
     user.plan = "paid"
 
+    logger.info(f'posting eventi user-upgrade for {user=}')
+    post_event('user-upgrade', user)
+
     # post a Slack message to sales department
-    post_slack_message("sales",
-        f"{user.name} has upgraded their plan.")
+    # post_slack_message("sales",
+        # f"{user.name} has upgraded their plan.")
 
     # send a thank you email
-    send_email(user.name, user.email,
-        "Thank you",
-        f"Thanks for upgrading, {user.name}! You're gonna love it. \nRegards, The DevNotes team")
+    # send_email(user.name, user.email,
+        # "Thank you",
+        # f"Thanks for upgrading, {user.name}! You're gonna love it. \nRegards, The DevNotes team")
 
     # write server log
-    log(f"User with email address {user.email} has upgraded their plan")
+    # log(f"User with email address {user.email} has upgraded their plan")
