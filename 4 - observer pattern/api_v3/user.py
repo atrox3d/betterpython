@@ -1,24 +1,18 @@
-from lib.email import send_email
+import logging
+
 from lib.db import create_user, find_user
-from lib.log import log
-from lib.slack import post_slack_message
 from lib.stringtools import get_random_string
+from .event import post_event
+
+logger = logging.getLogger(__name__)
+
 
 def register_new_user(name: str, password: str, email: str):
     # create an entry in the database
     user = create_user(name, password, email)
     
-    # post a Slack message to sales department
-    post_slack_message("sales",
-        f"{user.name} has registered with email address {user.email}. Please spam this person incessantly.")
-
-    # send a welcome email
-    send_email(user.name, user.email,
-        "Welcome",
-        f"Thanks for registering, {user.name}!\nRegards, The DevNotes team")
-
-    # write server log
-    log(f"User registered with email address {user.email}")
+    logger.info(f'posting event user-registered for {user=}')
+    post_event('user-registered', user)
 
 def password_forgotten(email: str):
     # retrieve the user
@@ -27,9 +21,5 @@ def password_forgotten(email: str):
     # generate a password reset code
     user.reset_code = get_random_string(16)
 
-    # send a password reset message
-    send_email(user.name, user.email, "Reset your password",
-        f"To reset your password, use this very secure code: {user.reset_code}.\nRegards, The DevNotes team")
-
-    # write server log
-    log(f"User with email address {user.email} requested a password reset")
+    logger.info(f'posting event user-password-forgotten for {user=}')
+    post_event('user-password-forgotten', user)
