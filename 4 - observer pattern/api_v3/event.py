@@ -5,6 +5,9 @@ logger = logging.getLogger(__name__)
 subscribers = dict()
 
 def subscribe(event: str, action: callable) -> None:
+    """
+    adds event handler for event
+    """
     if not event in subscribers:
         logger.info(f'creating new list for event {event}')
         subscribers[event] = list()
