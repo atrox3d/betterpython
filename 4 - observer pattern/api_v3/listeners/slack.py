@@ -1,11 +1,5 @@
 import logging
 
-# if __name__ == '__main__':
-#     import sys
-#     sys.path.append(".")
-#     sys.path.append("api_v3")
-#     from event import subscribe
-# else:
 from ..event import subscribe
 from lib.slack import post_slack_message
 
@@ -23,9 +17,3 @@ def setup_handlers() -> None:
     logger.info('slack: subscribing user events')
     subscribe('user-registered', handle_user_registered_event)
     subscribe('user-upgrade', handle_user_upgrade_plan_event)
-
-# if __name__ == '__main__':
-#     logging.basicConfig(level=logging.INFO, 
-#                         format="[%(levelname)s | %(filename)s - %(funcName)s() ] %(message)s"
-#     )
-#     setup_handlers()
