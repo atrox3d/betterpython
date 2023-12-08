@@ -1,9 +1,8 @@
 from typing import List
+from abc import ABC, abstractmethod
 
-class Application:
 
-    def __init__(self, trading_strategy = "average"):
-        self.trading_strategy = trading_strategy
+class TraderBot(ABC):
 
     def connect(self):
         print(f"Connecting to Crypto exchange...")
@@ -11,15 +10,14 @@ class Application:
     def get_market_data(self, coin: str) -> List[float]:
         return [10, 12, 18, 14]
 
-    def list_average(self, l: List[float]) -> float:
-        return sum(l) / len(l)
-
+    @abstractmethod
     def should_buy(self, prices: List[float]) -> bool:
         if self.trading_strategy == "minmax":
             return prices[-1] == min(prices)
         else:
             return prices[-1] < self.list_average(prices)
 
+    @abstractmethod
     def should_sell(self, prices: List[float]) -> bool:
         if self.trading_strategy == "minmax":
             return prices[-1] == max(prices)
@@ -38,5 +36,24 @@ class Application:
         else:
             print(f"No action needed for {coin}.")
 
-application = Application("average")
+class AverageTrader(TraderBot):
+    def list_average(self, l: List[float]) -> float:
+        return sum(l) / len(l)
+
+    def should_buy(self, prices: List[float]) -> bool:
+        return prices[-1] < self.list_average(prices)
+
+    def should_sell(self, prices: List[float]) -> bool:
+        return prices[-1] > self.list_average(prices)
+
+
+class MinMaxTrader(TraderBot):
+    def should_buy(self, prices: List[float]) -> bool:
+        return prices[-1] == min(prices)
+
+    def should_sell(self, prices: List[float]) -> bool:
+        return prices[-1] == max(prices)
+
+
+application = AverageTrader()
 application.check_prices("BTC/USD")
