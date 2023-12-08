@@ -1,14 +1,27 @@
 from typing import List
 from abc import ABC, abstractmethod
 
+class Exchange(ABC):
+    @abstractmethod
+    def connect(self):
+        pass
+    @abstractmethod
+    def get_market_data(self, coin: str) -> List[float]:
+        pass
 
-class TraderBot(ABC):
 
+class CoinBase(Exchange):
     def connect(self):
         print(f"Connecting to Crypto exchange...")
 
     def get_market_data(self, coin: str) -> List[float]:
         return [10, 12, 18, 14]
+
+class TraderBot(ABC):
+
+    def __init__(self, exchange: Exchange) -> None:
+        super().__init__()
+        self.exchange = exchange
 
     @abstractmethod
     def should_buy(self, prices: List[float]) -> bool:
@@ -25,8 +38,8 @@ class TraderBot(ABC):
             return prices[-1] > self.list_average(prices)
 
     def check_prices(self, coin: str):
-        self.connect()
-        prices = self.get_market_data(coin)
+        self.exchange.connect()
+        prices = self.exchange.get_market_data(coin)
         should_buy = self.should_buy(prices)
         should_sell = self.should_sell(prices)
         if should_buy:
@@ -55,5 +68,5 @@ class MinMaxTrader(TraderBot):
         return prices[-1] == max(prices)
 
 
-application = AverageTrader()
+application = AverageTrader(CoinBase())
 application.check_prices("BTC/USD")
