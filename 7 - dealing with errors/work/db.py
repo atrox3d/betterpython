@@ -10,8 +10,25 @@ def blog_lst_to_json(item):
          }
 
 def fetch_blogs():
-    pass
+    con = sqlite3.connect('application.db')
+    cur = con.cursor()
+
+    cur.execute('SELECT * FROM blogs where public=1')
+
+    result = list(map(blog_lst_to_json, cur.fetchall()))
+
+    con.close()
+    return result
+
 
 def fetch_blog(id: str):
-    pass
+    con = sqlite3.connect('application.db')
+    cur = con.cursor()
+
+    cur.execute(f'SELECT * FROM blogs where id={id}')
+    result = cur.fetchone()
+    data = blog_lst_to_json(result)
+
+    con.close()
+    return data
 
