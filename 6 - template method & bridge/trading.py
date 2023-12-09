@@ -10,9 +10,17 @@ class Exchange(ABC):
         pass
 
 
-class CoinBase(Exchange):
+class CoinBaseExchange(Exchange):
     def connect(self):
-        print(f"Connecting to Crypto exchange...")
+        print(f"Connecting to CoinBase exchange...")
+
+    def get_market_data(self, coin: str) -> List[float]:
+        return [10, 12, 18, 14]
+
+
+class BinanceExchange(Exchange):
+    def connect(self):
+        print(f"Connecting to CoinBase exchange...")
 
     def get_market_data(self, coin: str) -> List[float]:
         return [10, 12, 18, 14]
@@ -20,7 +28,6 @@ class CoinBase(Exchange):
 class TraderBot(ABC):
 
     def __init__(self, exchange: Exchange) -> None:
-        super().__init__()
         self.exchange = exchange
 
     @abstractmethod
@@ -68,5 +75,5 @@ class MinMaxTrader(TraderBot):
         return prices[-1] == max(prices)
 
 
-application = AverageTrader(CoinBase())
+application = AverageTrader(BinanceExchange())
 application.check_prices("BTC/USD")
