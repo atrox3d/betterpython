@@ -1,6 +1,9 @@
 import sqlite3
 
-def blog_lst_to_json(item):
+def blog_lst_to_json(item: list) -> dict:
+    """
+    returns a dict from a single recordset
+    """
     return { 
         'id': item[0],
         'published': item[1],
@@ -9,7 +12,10 @@ def blog_lst_to_json(item):
         'public': bool(item[4])
          }
 
-def fetch_blogs():
+def fetch_blogs() -> list[dict]:
+    """
+    return a list of recordsets matching the query
+    """
     con = sqlite3.connect('application.db')
     cur = con.cursor()
 
@@ -21,7 +27,10 @@ def fetch_blogs():
     return result
 
 
-def fetch_blog(id: str):
+def fetch_blog(id: str) -> dict:
+    """
+    returns a single recordset
+    """
     con = sqlite3.connect('application.db')
     cur = con.cursor()
 
