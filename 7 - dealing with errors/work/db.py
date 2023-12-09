@@ -23,7 +23,7 @@ def fetch_blogs() -> list[dict]:
     """
     return a list of recordsets matching the query
     """
-    con = sqlite3.connect('application.db')
+    con = sqlite3.connect('7 - dealing with errors/work/application.db')
     cur = con.cursor()
 
     cur.execute('SELECT * FROM blogs where public=1')
