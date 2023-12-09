@@ -15,4 +15,4 @@ def all_blogs():
 def get_blog(id):
     return jsonify(fetch_blog(id))
 
-app.run()
+app.run(debug=True)
