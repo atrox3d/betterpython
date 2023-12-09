@@ -1,4 +1,11 @@
 import sqlite3
+from types import SimpleNamespace
+
+class NotFoundError(Exception):
+    pass
+
+class NotAuthorizedError(Exception):
+    pass
 
 def blog_lst_to_json(item: list) -> dict:
     """
@@ -31,13 +38,23 @@ def fetch_blog(id: str) -> dict:
     """
     returns a single recordset
     """
-    con = sqlite3.connect('application.db')
-    cur = con.cursor()
+    try:
+        con = sqlite3.connect('application.db')
+        cur = con.cursor()
 
-    cur.execute(f"SELECT * FROM blogs where id='{id}'")
-    result = cur.fetchone()
-    data = blog_lst_to_json(result)
+        cur.execute(f"SELECT * FROM blogs where id='{id}'")
+        result = cur.fetchone()
 
-    con.close()
-    return data
+        if result is None:
+            raise NotFoundError(f'Unable to find blog with id {id}')
 
+        data = blog_lst_to_json(result)
+        if not SimpleNamespace(**data).public:
+            raise NotAuthorizedError(f'You are not allowed to access blog with id {id}')                    
+        return data
+    
+    except sqlite3.OperationalError as oe:
+        print(oe)
+        raise NotFoundError(f'Unable to find blog with id {id}')
+    finally:
+        con.close()
