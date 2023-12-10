@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, abort
 from db import fetch_blogs, fetch_blog
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 

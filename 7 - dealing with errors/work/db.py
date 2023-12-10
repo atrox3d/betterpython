@@ -1,6 +1,10 @@
 import sqlite3
 from types import SimpleNamespace
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class NotFoundError(Exception):
     pass
 
@@ -23,12 +27,18 @@ def fetch_blogs() -> list[dict]:
     """
     return a list of recordsets matching the query
     """
+    logger.info('opening db')
     con = sqlite3.connect('7 - dealing with errors/work/application.db')
     cur = con.cursor()
+    logger.info(f'{con=}')
+    logger.info(f'{cur=}')
 
     cur.execute('SELECT * FROM blogs where public=1')
 
-    result = list(map(blog_lst_to_json, cur.fetchall()))
+    records = cur.fetchall()
+    logger.info(f'{records=}')
+    result = list(map(blog_lst_to_json, records))
+    logger.info(f'{result=}')
 
     con.close()
     return result
