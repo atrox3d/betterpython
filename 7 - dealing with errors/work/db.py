@@ -49,22 +49,30 @@ def fetch_blog(id: str) -> dict:
     returns a single recordset
     """
     try:
-        con = sqlite3.connect('application.db')
+        con = sqlite3.connect('7 - dealing with errors/work/application.db')
         cur = con.cursor()
 
-        cur.execute(f"SELECT * FROM blogs where id='{id}'")
+        query=(f"SELECT * FROM blogs where id='{id}'")
+        logger.info(query)
+        cur.execute(query)
+
         result = cur.fetchone()
+        logger.info(f'{result=}')
 
         if result is None:
-            raise NotFoundError(f'Unable to find blog with id {id}')
-
+            message = f'Unable to find blog with id {id}'
+            logger.exception(message)
+            raise NotFoundError(message)
         data = blog_lst_to_json(result)
         if not SimpleNamespace(**data).public:
-            raise NotAuthorizedError(f'You are not allowed to access blog with id {id}')                    
+            message = f'You are not allowed to access blog with id {id}'
+            logger.exception(message)
+            raise NotAuthorizedError(message)                    
         return data
     
     except sqlite3.OperationalError as oe:
-        print(oe)
-        raise NotFoundError(f'Unable to find blog with id {id}')
+        message = f'Unable to find blog with id {id}'
+        logger.exception(message)
+        raise NotFoundError(message)
     finally:
         con.close()

@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, abort
-from db import fetch_blogs, fetch_blog
+from db import fetch_blogs, fetch_blog, NotFoundError, NotAuthorizedError
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -25,6 +25,12 @@ def get_blog(id):
     """
     single blog entry
     """
-    return jsonify(fetch_blog(id))
+    try:
+        return jsonify(fetch_blog(id))
+    except NotFoundError:
+        abort(404, description='resource not found')
+    except NotAuthorizedError:
+        abort(403, description='Access denied')    
+
 
 app.run(debug=True)
