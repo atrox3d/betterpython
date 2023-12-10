@@ -79,12 +79,13 @@ def fetch_blog(id: str) -> dict:
 
             if result is None:
                 message = f'Unable to find blog with id {id}'
-                logger.exception(message)
+                logger.error(message)
+                logger.info('raising NotFoundError')
                 raise NotFoundError(message)
             data = blog_lst_to_json(result)
             if not SimpleNamespace(**data).public:
                 message = f'You are not allowed to access blog with id {id}'
-                logger.exception(message)
+                logger.error(message)
                 raise NotAuthorizedError(message)                    
             return data
         
