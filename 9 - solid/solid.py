@@ -23,15 +23,30 @@ class Order:
 class PaymentProcessor(ABC):
     
     @abstractmethod
-    def pay(self, order, security_code):
+    def pay(self, order):
         pass
 
-class DebitPaymentProcessor(PaymentProcessor):
+class PaymentProcessor_SMS(PaymentProcessor):
+    
+    verified: bool = False
+
+    @abstractmethod
+    def auth_sms(self, code):
+        pass
+
+
+class DebitPaymentProcessor(PaymentProcessor_SMS):
 
     def __init__(self, security_code) -> None:
         self.security_code = security_code
 
+    def auth_sms(self, code):
+        print(f'Verifying security code: {code}')
+        self.verified = True
+
     def pay(self, order):
+        if not self.verified:
+            raise Exception('Not Authorized')
         print("Processing debit payment type")
         print(f"Verifying security code: {self.security_code}")
         order.status = "paid"
@@ -46,12 +61,19 @@ class CreditPaymentProcessor(PaymentProcessor):
         print(f"Verifying security code: {self.security_code}")
         order.status = "paid"
 
-class PaypalPaymentProcessor(PaymentProcessor):
+class PaypalPaymentProcessor(PaymentProcessor_SMS):
 
     def __init__(self, email) -> None:
         self.email = email
 
+
+    def auth_sms(self, code):
+        print(f'Verifying security code: {code}')
+        self.verified = True
+
     def pay(self, order):
+        if not self.verified:
+            raise Exception('Not Authorized')
         print("Processing Paypal payment type")
         print(f"Verifying email: {self.email}")
         order.status = "paid"
@@ -64,4 +86,5 @@ order.add_item("USB cable", 2, 5)
 
 print(order.total_price())
 processor = PaypalPaymentProcessor('mail@server')
+processor.auth_sms(123456)
 processor.pay(order)
